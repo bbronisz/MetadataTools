@@ -276,6 +276,10 @@ public partial class Checker
                 desktop = true;
                 isFrameworkRedirect = true;
             }
+            else if (commandLine.ResolveFromGac && !commandLine.ResolveFromNetCore)
+            {
+                desktop = true;
+            }
         }
 
         // resolve desktop framework assemblies from the GAC
