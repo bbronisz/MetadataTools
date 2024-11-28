@@ -66,7 +66,7 @@ namespace BinaryCompatChecker
             else
             {
                 baselineFile = Path.GetFullPath(baselineFile);
-                if (!File.Exists(baselineFile))
+                if (!File.Exists(baselineFile) && !commandLine.IgnoreBaselineFile)
                 {
                     WriteError($"Baseline file doesn't exist: {commandLine.BaselineFile}");
                     return false;
@@ -269,7 +269,7 @@ namespace BinaryCompatChecker
 
             if (reportLines.Count > 0)
             {
-                if (File.Exists(baselineFile))
+                if (!commandLine.IgnoreBaselineFile && File.Exists(baselineFile))
                 {
                     var baseline = File.ReadAllLines(baselineFile);
                     if (!Enumerable.SequenceEqual(baseline, reportLines))
@@ -303,7 +303,7 @@ namespace BinaryCompatChecker
                         }
                     }
                 }
-                else if (!File.Exists(reportFile))
+                else if (!File.Exists(reportFile) || commandLine.IgnoreBaselineFile)
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(reportFile));
 
