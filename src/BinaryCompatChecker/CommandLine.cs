@@ -11,6 +11,7 @@ public class CommandLine
     public bool ReportIVT { get; set; }
     public bool ReportVersionMismatch { get; set; } = true;
     public bool ReportIntPtrConstructors { get; set; }
+    private bool disableUnreferencedAssembliesReporting;
     public bool ReportUnreferencedAssemblies { get; set; } = false;
     public bool ReportFacade { get; set; } = true;
     public bool ReportMissingAssemblies { get; set; } = true;
@@ -336,7 +337,17 @@ public class CommandLine
                     closureRootPatterns.Add(part.Trim('"'));
                 }
 
-                ReportUnreferencedAssemblies = true;
+                if (!disableUnreferencedAssembliesReporting)
+                    ReportUnreferencedAssemblies = true;
+                arguments.Remove(arg);
+                continue;
+            }
+
+            if (arg.Equals("/ignoreUnreferencedAssemblies", StringComparison.OrdinalIgnoreCase) ||
+                arg.Equals("-ignoreUnreferencedAssemblies", StringComparison.OrdinalIgnoreCase))
+            {
+                ReportUnreferencedAssemblies = false;
+                disableUnreferencedAssembliesReporting = true;
                 arguments.Remove(arg);
                 continue;
             }
