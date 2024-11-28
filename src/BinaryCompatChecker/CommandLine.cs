@@ -143,6 +143,7 @@ public class CommandLine
 
     public IReadOnlyList<string> IgnoreVersionMismatchForAppConfigs { get; set; } = Array.Empty<string>();
 
+    public bool IgnoreBaselineFile { get; set; }
     public string BaselineFile { get; set; }
     public string BaselineDirectory { get; set; }
     public string ReportFile { get; set; }
@@ -430,6 +431,13 @@ public class CommandLine
                     report = report.Trim('"');
                     arguments.Remove(arg);
                     BaselineFile = report;
+                    continue;
+                }
+
+                if (argName.Equals("ignoreBaseline", StringComparison.OrdinalIgnoreCase))
+                {
+                    arguments.Remove(arg);
+                    IgnoreBaselineFile = true;
                     continue;
                 }
 

@@ -196,7 +196,7 @@ Report file: {checkResult.ReportFile}");
                 }
 
                 baselineFile = Path.GetFullPath(baselineFile);
-                if (!File.Exists(baselineFile))
+                if (!File.Exists(baselineFile) && !commandLine.IgnoreBaselineFile)
                 {
                     WriteError($"Baseline file doesn't exist: {baselineFile}");
                     result.Success = false;
@@ -407,7 +407,7 @@ Report file: {checkResult.ReportFile}");
                 reportLines.Add(text);
             }
 
-            if (File.Exists(baselineFile))
+            if (!commandLine.IgnoreBaselineFile && File.Exists(baselineFile))
             {
                 var baseline = File.ReadAllLines(baselineFile);
                 if (!Enumerable.SequenceEqual(baseline, reportLines, StringComparer.OrdinalIgnoreCase))
@@ -457,7 +457,7 @@ Report file: {reportFile}");
                     }
                 }
             }
-            else if (!File.Exists(reportFile))
+            else if (!File.Exists(reportFile) || commandLine.IgnoreBaselineFile)
             {
                 if (reportLines.Count > 0)
                 {
