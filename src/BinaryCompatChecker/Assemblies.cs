@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Mono.Cecil;
@@ -255,7 +254,7 @@ public partial class Checker
         Version version = reference.Version;
 
         bool isFrameworkName = Framework.IsFrameworkName(shortName);
-        if (!isFrameworkName)
+        if (!isFrameworkName && !commandLine.ResolveFromGac)
         {
             return null;
         }
@@ -283,6 +282,7 @@ public partial class Checker
         }
 
         // resolve desktop framework assemblies from the GAC
+        //Console.WriteLine($"TryResolve: {shortName}: {desktop}");
         if (desktop)
         {
             if (string.Equals(shortName, "mscorlib", StringComparison.OrdinalIgnoreCase) &&
@@ -357,7 +357,7 @@ public partial class Checker
         }
         else
         {
-            if (!commandLine.ResolveFromNetCore)
+            if (!commandLine.ResolveFromNetCore || !isFrameworkName)
             {
                 return null;
             }

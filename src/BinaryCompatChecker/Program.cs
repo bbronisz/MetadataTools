@@ -517,6 +517,7 @@ Report file: {reportFile}");
         {
             if (reference.Version != referenced.Name.Version)
             {
+                //Console.WriteLine("CheckAssemblyReferenceVersion: {0}", reference.FullName);
                 versionMismatches.Add(new VersionMismatch()
                 {
                     Referencer = referencing,
